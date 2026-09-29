@@ -65,6 +65,5 @@ except FileNotFoundError:
     print("Could not find the file")
     exit()
 
-print("Data for 15/04/2022: ")
-print(weather_data_this_year['2022']['04']['15'])
+
 
