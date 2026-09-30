@@ -65,6 +65,49 @@ except FileNotFoundError:
     print("Could not find the file")
     exit()
 
+#tar en "0" forran måneder og datoer som er ensiffrede
+def fix_date_number (before_number):
+    after_number = "0"
+    if before_number < 10:
+        after_number = "0" + str(before_number)
+        return after_number
+    else:
+        after_number = str(before_number)
+        return after_number
+
+#det er disse som skal måles mot hverandre for å finne lengste oppholdsperiode
+temporary_rain_counter =[]
+longest_rainless_period = []
+
+
+ammount_of_months = len(weather_data_this_year[entered_date])
+for month in range(1,ammount_of_months+1):   
+    
+    month_counter = fix_date_number(month)
+    ammount_of_days = len(weather_data_this_year[entered_date][month_counter])
+
+    for day_counter in range(1,ammount_of_days+1):
+
+        day_counter = fix_date_number(day_counter)
+
+        try:
+            #legger til datoer til midlertidig liste om det ikke regner den dagen
+            if (weather_data_this_year[entered_date][month_counter][day_counter]['precip']) ==0:
+                temporary_rain_counter.append(month_counter +"." + day_counter) 
+            #hvis det regner en dag sammenlignes den forrige lengste perioden med nåværende. Den lengste forblir og temp.raincouter blir satt=[]
+            else:
+                if len(temporary_rain_counter)>len(longest_rainless_period):
+                    longest_rainless_period = temporary_rain_counter
+                temporary_rain_counter = []
+        except KeyError:
+            print("det skejdde en feil i lesingen av regndata")
+            continue
+
+
+print(f"den lengste regnløse perioden i {entered_date} varte i {len(longest_rainless_period)} dagern\n Den varte fra: {longest_rainless_period[0]} til {longest_rainless_period[-1]}")
+
+#print("Data for 15/04/2022: ")
+#print(weather_data_this_year['2022']['04']['15'])
 summerday = 0
 high_summerday = 0
 tropical_day = 0
