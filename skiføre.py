@@ -55,27 +55,3 @@ def skisesong():
 
 
 print("Number of days of ski-season: ", skisesong(),"\n")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#skriv in et år, ta ifjor [11] til og med i år [05]
-#hvis of bare hvis 20cm <= snødybde, i +=1
-#til slutt returnerer du i
