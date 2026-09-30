@@ -65,5 +65,24 @@ except FileNotFoundError:
     print("Could not find the file")
     exit()
 
+summerday = 0
+high_summerday = 0
+tropical_day = 0
 
+for month in weather_data_this_year[str(chosen_year)]:
+    for day in (weather_data_this_year[str(chosen_year)][str(month)]):
+        if weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 30.0:
+            tropical_day += 1
+            continue
+        elif weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 25.0:
+            high_summerday += 1
+            continue
+        elif weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 20.0:
+            summerday += 1
+
+print("=============================")
+print(f"Days over 20°: {summerday}")
+print(f"Days over 25°: {high_summerday}")
+print(f"Days over 30°: {tropical_day}")
+print("=============================")
 
