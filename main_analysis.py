@@ -65,11 +65,11 @@ except FileNotFoundError:
     print("Could not find the file")
     exit()
 
-summerday = 0
+summerday = 0                # Variables to count days
 high_summerday = 0
 tropical_day = 0
 
-for month in weather_data_this_year[str(chosen_year)]:
+for month in weather_data_this_year[str(chosen_year)]:                   # Looping through all months
     for day in (weather_data_this_year[str(chosen_year)][str(month)]):
         if weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 30.0:
             tropical_day += 1
