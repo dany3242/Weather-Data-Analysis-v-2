@@ -95,7 +95,7 @@ for temp in temperatures:
         continue
 
 print("=============================")
-print(f"Days with temperature over 5°C, added to a total plantgrowth number this perticular year: {total_annual_growth}")
+print(f"Total growth: {total_annual_growth}")
 print("=============================")
 
 
