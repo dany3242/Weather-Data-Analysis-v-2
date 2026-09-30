@@ -27,15 +27,15 @@ weather_data_this_year = {}
 try:
     with open("sinnes_2014_2025.csv", "r", encoding='utf-8') as f:
         data = csv.DictReader(f, delimiter=';')
-        for line in data:                                                       # linje for linje
+        for line in data:
 
             if (
                 not line.get("Tid(norsk normaltid)")                             
-                or "Data er gyldig" in line["Tid(norsk normaltid)"]             # denne if-en sjekker om
-            ):                                                                  # verdien i tid kolonnen kvalifiserer?
+                or "Data er gyldig" in line["Tid(norsk normaltid)"]
+            ):
                 continue
 
-            parts = line['Tid(norsk normaltid)'].split('.')                     # wow kult
+            parts = line['Tid(norsk normaltid)'].split('.')
             d = parts[0]
             m = parts[1]
             y = parts[2]
@@ -47,10 +47,10 @@ try:
 
             weather_data_this_year[y][m][d] = {
                 'temp':
-                    (float(line['Middeltemperatur (døgn)'].replace(',','.'))    # her floater du strengen fra csv filen,
-                    if line['Middeltemperatur (døgn)'] not in ("-", " ", "")    # endrer ',' til '.'
-                    else 0.0),                                                  # men hva skjekker denne? virket bakvendt 
-                                                                                # logisk for meg sånn som d står XD
+                    (float(line['Middeltemperatur (døgn)'].replace(',','.'))
+                    if line['Middeltemperatur (døgn)'] not in ("-", " ", "")
+                    else 0.0),
+                                                                                
                 'precip':
                     (float(line['Nedbør (døgn)'].replace(',','.'))
                     if line['Nedbør (døgn)'] not in ("-", " ", "")
