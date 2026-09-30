@@ -54,7 +54,7 @@ def skisesong():
     return k+b
 
 
-print("antall dager med skifarene: ", skisesong(),"\n")
+print("Number of days of ski-season: ", skisesong(),"\n")
 
 
 
