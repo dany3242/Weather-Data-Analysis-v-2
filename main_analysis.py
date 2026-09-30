@@ -108,4 +108,79 @@ print(f"den lengste regnløse perioden i {entered_date} varte i {len(longest_rai
 
 #print("Data for 15/04/2022: ")
 #print(weather_data_this_year['2022']['04']['15'])
+summerday = 0
+high_summerday = 0
+tropical_day = 0
 
+for month in weather_data_this_year[str(chosen_year)]:
+    for day in (weather_data_this_year[str(chosen_year)][str(month)]):
+        if weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 30.0:
+            tropical_day += 1
+            continue
+        elif weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 25.0:
+            high_summerday += 1
+            continue
+        elif weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 20.0:
+            summerday += 1
+
+print("=============================")
+print(f"Days over 20°: {summerday}")
+print(f"Days over 25°: {high_summerday}")
+print(f"Days over 30°: {tropical_day}")
+print("=============================")
+
+
+"""  ===============SKISEASON=============== """
+
+try:
+    skisesong_1 = chosen_year -1            #define lower bound
+    skisesong_2 = chosen_year                   #define upper bound
+except IndexError:
+    pass
+
+
+def counter(i):
+    """
+
+    :rtype: str
+    """
+    if i <= 9:
+        i = str(0) + str(i)
+    else:
+        i = str(int(i)*10)[0] + str(i)[1]
+    return i
+
+
+list1 = []
+list2 = []
+
+
+
+def skisesong():
+    skisesong_1 = chosen_year -1
+    skisesong_2 = chosen_year
+    i = 11; j = 1
+    k = 0; b = 0
+    for m in weather_data_this_year:
+        try:
+            for n in weather_data_this_year[f'{skisesong_1}'][f'{counter(i)}']:
+                list1.append(weather_data_this_year[f'{skisesong_1}'][f'{counter(i)}'][n]['snow'])
+                if 20 <= int(weather_data_this_year[f'{skisesong_1}'][f'{counter(i)}'][n]['snow']):
+                 k+=1
+            i += 1
+            if i == 13:
+                break
+        except KeyError:
+            continue
+
+    for a in weather_data_this_year:
+        for z in weather_data_this_year[f'{skisesong_2}'][f'{counter(j)}']:
+            if 20 <= int(weather_data_this_year[f'{skisesong_2}'][f'{counter(j)}'][z]['snow']):
+                b += 1
+        j += 1
+        if j == 6:
+            break
+    return k+b
+
+
+print("Number of days of ski-season: ", skisesong(),"\n")
