@@ -95,7 +95,7 @@ for temp in temperatures:
         continue
 
 print("=============================")
-print(f"Total growth: {total_annual_growth}")
+print(f"Total growth: {(total_annual_growth):.2f}mm")
 print("=============================")
 
 
@@ -108,11 +108,13 @@ plt.xlabel("Date")
 
 plt.subplot(2,2,2)
 plt.fill_between(dates, wind, color="lightblue")
+plt.grid()
 plt.ylabel("Wind")
 plt.xlabel("Date")
 
 plt.subplot(2,2,3)
 plt.fill_between(dates, prescis)
+plt.grid()
 plt.ylabel("Percipitation")
 plt.xlabel("Date")
 
