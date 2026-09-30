@@ -40,9 +40,9 @@ try:
             m = parts[1]
             y = parts[2]
 
-            if y not in weather_data_this_year:                                 # hva gjør denne?
+            if y not in weather_data_this_year:
                 weather_data_this_year[y] = {}
-            if m not in weather_data_this_year[y]:                              # ..og denne?
+            if m not in weather_data_this_year[y]:
                 weather_data_this_year[y][m] = {}
 
             weather_data_this_year[y][m][d] = {
@@ -68,14 +68,11 @@ except FileNotFoundError:
     print("Could not find the file")
     exit()
 
-print("Data for 15/04/2022: ")
-print(weather_data_this_year['2022']['04']['15'])
-
-datoer = []
-temperaturer = []
-nedbør = []
-vind = []
-snø = []
+dates = []
+temperatures = []
+prescis = []
+wind = []
+snow = []
 
 year_data = weather_data_this_year[str(chosen_year)]
 
@@ -83,53 +80,53 @@ for month in sorted(year_data, key=int):
     for day in sorted(year_data[month], key=int):
         measurements = year_data[month][day]
 
-        datoer.append(f"{day}/{month}")
-        temperaturer.append(measurements["temp"])
-        nedbør.append(measurements["precip"])
-        vind.append(measurements["wind"])
-        snø.append(measurements["snow"])
+        dates.append(f"{day}/{month}")
+        temperatures.append(measurements["temp"])
+        prescis.append(measurements["precip"])
+        wind.append(measurements["wind"])
+        snow.append(measurements["snow"])
 
-total_årlig_vekst = []
+total_annual_growth = []
 
-for temp in temperaturer:                
+for temp in temperatures:                
     if temp > 5:
-        total_årlig_vekst.append(temp - 5)
+        total_annual_growth.append(temp - 5)
     else:
-        total_årlig_vekst.append(0)
+        total_annual_growth.append(0)
 
 
-plt.figure(figsize=(15, 5, "cm"))
+plt.figure(figsize=(35, 35, "cm"))
 plt.subplot(2,2,1)
-plt.fill_between(datoer, temperaturer, color="green")
+plt.fill_between(dates, temperatures, color="green")
 plt.grid()
-plt.ylabel("Temp")
-plt.xlabel("Dato")
+plt.ylabel("Temperature")
+plt.xlabel("Date")
 
 plt.subplot(2,2,2)
-plt.fill_between(datoer, vind, color="lightblue")
-plt.ylabel("Vindstyrke")
-plt.xlabel("Dato")
+plt.fill_between(dates, wind, color="lightblue")
+plt.ylabel("Wind")
+plt.xlabel("Date")
 
 plt.subplot(2,2,3)
-plt.fill_between(datoer, nedbør)
-plt.ylabel("Nedbør")
-plt.xlabel("Dato")
+plt.fill_between(dates, prescis)
+plt.ylabel("Percipitation")
+plt.xlabel("Date")
 
 plt.subplot(2,2,4)
-plt.fill_between(datoer, snø, color="lightgray")
+plt.fill_between(dates, snow, color="lightgray")
 plt.grid()
-plt.ylabel("Snømengde")
-plt.xlabel("Dato")
+plt.ylabel("Snow")
+plt.xlabel("Date")
 
 for axis in plt.gcf().axes:
     axis.xaxis.set_major_locator(MaxNLocator(nbins=6))
 
 plt.style.use('dark_background')
 plt.figure(figsize=(15, 5))
-plt.title("Når på året plantene faktisk vokser", fontsize=20)
-plt.fill_between(datoer, total_årlig_vekst, color="lightgreen")
-plt.ylabel("Total plantevekst ")
-plt.xlabel("Dato")
+plt.title("Plants growth period", fontsize=20)
+plt.fill_between(dates, total_annual_growth, color="lightgreen")
+plt.ylabel("Plant growth")
+plt.xlabel("Date")
 
 for axis in plt.gcf().axes:
     axis.xaxis.set_major_locator(MaxNLocator(nbins=12))
