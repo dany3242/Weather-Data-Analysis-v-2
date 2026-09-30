@@ -86,13 +86,17 @@ for month in sorted(year_data, key=int):
         wind.append(measurements["wind"])
         snow.append(measurements["snow"])
 
-total_annual_growth = []
+total_annual_growth = 0
 
 for temp in temperatures:                
     if temp > 5:
-        total_annual_growth.append(temp - 5)
+        total_annual_growth += (temp - 5)
     else:
-        total_annual_growth.append(0)
+        continue
+
+print("=============================")
+print(f"Days with temperature over 5°C, added to a total plantgrowth number this perticular year: {total_annual_growth}")
+print("=============================")
 
 
 plt.figure(figsize=(35, 35, "cm"))
@@ -121,12 +125,17 @@ plt.xlabel("Date")
 for axis in plt.gcf().axes:
     axis.xaxis.set_major_locator(MaxNLocator(nbins=6))
 
+
+"""
+Graf til plante vekst, men trenger liste på linje 89 for å fungere hvis vi vil være fancy.
+
 plt.style.use('dark_background')
 plt.figure(figsize=(15, 5))
 plt.title("Plants growth period", fontsize=20)
 plt.fill_between(dates, total_annual_growth, color="lightgreen")
 plt.ylabel("Plant growth")
 plt.xlabel("Date")
+"""
 
 for axis in plt.gcf().axes:
     axis.xaxis.set_major_locator(MaxNLocator(nbins=12))
