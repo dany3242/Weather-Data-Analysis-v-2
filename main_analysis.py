@@ -87,9 +87,7 @@ print(f"Days over 30°: {tropical_day}")
 print("=============================")
 
 
-
-from main_analysis import chosen_year
-from main_analysis import weather_data_this_year
+"""  ===============SKISEASON=============== """
 
 try:
     skisesong_1 = chosen_year -1            #define lower bound
