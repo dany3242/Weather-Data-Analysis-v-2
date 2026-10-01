@@ -96,6 +96,29 @@ print(f"Days over 30°: {tropical_day}")
 print("=============================")
 
 
+def count_ski_season_days(weather_data, selected_year):
+    ski_season_days = 0
+    season_months = (
+        (str(selected_year - 1), ("11", "12")),
+        (str(selected_year), ("01", "02", "03", "04", "05")),
+    )
+
+    for year, months in season_months:
+        for month in months:
+            days = weather_data.get(year, {}).get(month, {})
+            ski_season_days += sum(
+                measurements["snow"] >= 20 for measurements in days.values()
+            )
+
+    return ski_season_days
+
+
+print(
+    "Number of days of ski-season (snow depth >= 20 cm): "
+    f"{count_ski_season_days(weather_data_this_year, chosen_year)}"
+)
+
+
 
 year_data = weather_data_this_year[str(chosen_year)]
 
