@@ -99,7 +99,7 @@ print(f"Total growth: {(total_annual_growth):.2f}mm")
 print("=============================")
 
 
-plt.figure(figsize=(35, 35, "cm"))
+plt.figure(figsize=(30, 30, "cm"))
 plt.subplot(2,2,1)
 plt.fill_between(dates, temperatures, color="green")
 plt.grid()
