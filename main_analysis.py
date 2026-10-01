@@ -21,21 +21,21 @@ while True:                                                        ### Getting a
         continue
 
 
-weather_data_this_year = {}
+weather_data_this_year = {}             ### Dict for all the data from CSV-file
 
 
 try:
     with open("sinnes_2014_2025.csv", "r", encoding='utf-8') as f:
         data = csv.DictReader(f, delimiter=';')
-        for line in data:
 
+        for line in data:               ### Validating lines
             if (
                 not line.get("Tid(norsk normaltid)")                             
                 or "Data er gyldig" in line["Tid(norsk normaltid)"]
             ):
                 continue
 
-            parts = line['Tid(norsk normaltid)'].split('.')
+            parts = line['Tid(norsk normaltid)'].split('.')    ### Breaking dates into parts to save as nested dicts
             d = parts[0]
             m = parts[1]
             y = parts[2]
@@ -45,7 +45,7 @@ try:
             if m not in weather_data_this_year[y]:
                 weather_data_this_year[y][m] = {}
 
-            weather_data_this_year[y][m][d] = {
+            weather_data_this_year[y][m][d] = {             ### Formating and creating all values from the file to dict
                 'temp':
                     (float(line['Middeltemperatur (døgn)'].replace(',','.'))
                     if line['Middeltemperatur (døgn)'] not in ("-", " ", "")
