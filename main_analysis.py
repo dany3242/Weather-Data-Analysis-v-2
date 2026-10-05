@@ -25,7 +25,7 @@ weather_data_this_year = {}             ### Dict for all the data from CSV-file
 
 
 try:
-    with open("sinnes_2014_2025.csv", "r", encoding='utf-8') as f:
+    with open("sinnes_2014_2025_med_makstemperatur.csv", "r", encoding='utf-8') as f:
         data = csv.DictReader(f, delimiter=';')
 
         for line in data:               ### Validating lines
@@ -50,7 +50,10 @@ try:
                     (float(line['Middeltemperatur (døgn)'].replace(',','.'))
                     if line['Middeltemperatur (døgn)'] not in ("-", " ", "")
                     else 0.0),
-                                                                                
+                'maxtemp':
+                    (float(line['Maksimumstemperatur (døgn)'].replace(',','.'))
+                    if line['Maksimumstemperatur (døgn)'] not in ("-"," ","")
+                    else 0.0),
                 'precip':
                     (float(line['Nedbør (døgn)'].replace(',','.'))
                     if line['Nedbør (døgn)'] not in ("-", " ", "")
@@ -63,36 +66,68 @@ try:
                     (float(line['Snødybde'].replace(',','.'))
                     if line['Snødybde'] not in ("-", " ", "")
                     else 0.0),
+
             }
 except FileNotFoundError:
     print("Could not find the file")
     exit()
 
-dates = []
-temperatures = []
-prescis = []
-wind = []
-snow = []
 
-summerday = 0                # Variables to count days
+def fix_date_number (before_number):
+    before_number = int(before_number)
+    after_number = "0"
+    if before_number < 10:
+        after_number = "0" + str(before_number)
+        return after_number
+    else:
+        after_number = str(before_number)
+        return after_number
+
+temporary_rain_counter =[]
+longest_rainless_period = []
+
+ammount_of_months = len(weather_data_this_year[entered_date])
+for month in range(1,ammount_of_months+1):   
+    
+    month_counter = fix_date_number(month)
+    ammount_of_days = len(weather_data_this_year[entered_date][month_counter])
+
+    for day_counter in range(1,ammount_of_days+1):
+        day_counter = fix_date_number(day_counter)
+        try:
+            if (weather_data_this_year[entered_date][month_counter][day_counter]['precip']) ==0:
+                temporary_rain_counter.append(month_counter +"." + day_counter) 
+            else:
+                if len(temporary_rain_counter)>len(longest_rainless_period):
+                    longest_rainless_period = temporary_rain_counter
+                temporary_rain_counter = []
+        except KeyError:
+            print("Counld not find key")
+            continue
+
+print(f"The longest period with no downfall in {entered_date}")
+print(f"it lasted for {len(longest_rainless_period)} days")
+print(f"It lasted from: {longest_rainless_period[0]} to {longest_rainless_period[-1]}")
+
+summerday = 0
 high_summerday = 0
 tropical_day = 0
 
 for month in weather_data_this_year[str(chosen_year)]:                   # Looping through all months
     for day in (weather_data_this_year[str(chosen_year)][str(month)]):
-        if weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 30.0:
+        if weather_data_this_year[str(chosen_year)][str(month)][str(day)]['maxtemp'] >= 30.0:
             tropical_day += 1
             continue
-        elif weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 25.0:
+        elif weather_data_this_year[entered_date][month][day]['maxtemp'] >= 25:
             high_summerday += 1
             continue
-        elif weather_data_this_year[str(chosen_year)][str(month)][str(day)]['temp'] >= 20.0:
+        elif weather_data_this_year[entered_date][month][day]['maxtemp'] >= 20:
             summerday += 1
 
 print("=============================")
-print(f"Days over 20°: {summerday}")
-print(f"Days over 25°: {high_summerday}")
-print(f"Days over 30°: {tropical_day}")
+print(f"Days with max temerature over 20°: {summerday}")
+print(f"Days with max temerature over 25°: {high_summerday}")
+print(f"Days with max temerature over 30°: {tropical_day}")
 print("=============================")
 
 
@@ -118,7 +153,11 @@ print(
     f"{count_ski_season_days(weather_data_this_year, chosen_year)}"
 )
 
-
+dates = []
+temperatures = []
+prescis = []
+wind = []
+snow = []
 
 year_data = weather_data_this_year[str(chosen_year)]
 
@@ -145,7 +184,7 @@ print(f"Total growth: {(total_annual_growth):.2f}mm")
 print("=============================")
 
 
-plt.figure(figsize=(30, 30, "cm"))
+plt.figure(figsize=(40, 25, "cm"))
 plt.subplot(2,2,1)
 plt.fill_between(dates, temperatures, color="green")
 plt.grid()
