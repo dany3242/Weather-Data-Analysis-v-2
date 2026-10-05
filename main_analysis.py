@@ -97,7 +97,7 @@ for month in range(1,ammount_of_months+1):
                     longest_rainless_period = temporary_rain_counter
                 temporary_rain_counter = []
         except KeyError:
-            print("det skejdde en feil i lesingen av regndata")
+            print("Counld not find key")
             continue
 
 print(f"The longest period with no downfall in {entered_date}")
@@ -137,28 +137,30 @@ except IndexError:
     pass
 
 def skisesong():
-    skisesong_1 = chosen_year -1
-    skisesong_2 = chosen_year
-    i = 11; j = 1
-    k = 0; b = 0
-    for m in weather_data_this_year:
-        try:
-            for n in weather_data_this_year[f'{skisesong_1}'][f'{fix_date_number(i)}']:
-                if 20 <= int(weather_data_this_year[f'{skisesong_1}'][f'{fix_date_number(i)}'][n]['snow']):
-                    k+=1
-            i += 1
-            if i == 13:
-                break
-        except KeyError:
-            print("Key error ved lesing av snø-data")
-            continue
-    for a in weather_data_this_year:
-        for z in weather_data_this_year[f'{skisesong_2}'][f'{fix_date_number(j)}']:
-            if 20 <= int(weather_data_this_year[f'{skisesong_2}'][f'{fix_date_number(j)}'][z]['snow']):
-                b += 1
-        j += 1
-        if j == 6:
-            break
-    return k+b
+    skisesong_1 = str(chosen_year - 1)
+    skisesong_2 = str(chosen_year)
+    k = 0
+    b = 0
+    
+
+    if skisesong_1 in weather_data_this_year:
+        for i in [11, 12]:
+            month_str = fix_date_number(i)
+
+            if month_str in weather_data_this_year[skisesong_1]:
+                for n in weather_data_this_year[skisesong_1][month_str]:
+                    if 20 <= float(weather_data_this_year[skisesong_1][month_str][n]['snow']):
+                        k += 1
+                        
+
+    if skisesong_2 in weather_data_this_year:
+        for j in range(1, 6):
+            month_str = fix_date_number(j)
+            if month_str in weather_data_this_year[skisesong_2]:
+                for z in weather_data_this_year[skisesong_2][month_str]:
+                    if 20 <= float(weather_data_this_year[skisesong_2][month_str][z]['snow']):
+                        b += 1
+                        
+    return k + b
 
 print("Number of days of ski-season: ", skisesong(),"\n")
